@@ -229,7 +229,8 @@
 
 	<target name="war" depends="clean_war" description="">
 		<war destfile="${war}/${warbasename}${warextension}" webxml="${rsrc}/web.xml" needxmlfile="true" whenmanifestonly="fail" duplicate="fail">
-			<zipfileset dir="${lib}" includes="**/*.jar" excludes="**/tomcat*" prefix="WEB-INF/lib" />
+			<zipfileset dir="${lib}/compile" includes="**/*.jar" excludes="**/tomcat*" prefix="WEB-INF/lib" />
+			<!--zipfileset dir="${lib}/runtime" includes="**/*.jar" prefix="WEB-INF/lib" /-->
 			<zipfileset dir="${jar}" includes="**/*.jar" prefix="WEB-INF/lib" />
 		</war>
 	</target>

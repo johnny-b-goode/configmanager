@@ -25,7 +25,7 @@ public class ConfigManager {
 			}
 
 			if ((System.getProperty(ConfigManager.PROPERTY_ROOT_NODE) == null) || (System.getProperty(ConfigManager.PROPERTY_ROOT_NODE).isEmpty())) {
-				System.setProperty(ConfigManager.PROPERTY_ROOT_NODE, getClass().getName());
+				System.setProperty(ConfigManager.PROPERTY_ROOT_NODE, "/" + getClass().getName());
 			}
 
 			zk = new ZooKeeper(System.getProperty(ConfigManager.PROPERTY_SERVER), Integer.parseInt(System.getProperty(PROPERTY_SESSION_TIMEOUT)), null);
@@ -108,6 +108,10 @@ public class ConfigManager {
 
 		if (in.isEmpty()) {
 			throw new IllegalArgumentException("ConfigManager.setRootNode(String) was called with an empty String");
+		}
+
+		if (! in.startsWith("/")) {
+			in = "/" + in;
 		}
 
 		System.setProperty(ConfigManager.PROPERTY_ROOT_NODE, in);
