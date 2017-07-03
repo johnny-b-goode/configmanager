@@ -1,6 +1,6 @@
-package net.scientifichooliganism.zookeeper;
+package net.scientifichooliganism.configmanager;
 
-import net.scientifichooliganism.zookeeper.ConfigManager;
+import net.scientifichooliganism.configmanager.ConfigManager;
 
 import org.junit.*;
 import static org.junit.Assert.*;
