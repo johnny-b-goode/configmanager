@@ -1,4 +1,4 @@
-package net.scientifichooliganism.zookeeper;
+package net.scientifichooliganism.configmanager;
 
 import java.util.List;
 
@@ -16,16 +16,23 @@ import com.google.gson.Gson;
 */
 @Path("/zookeeper")
 public class ServiceDemo {
+	private static final String PROPERTY_MESSAGE = "serviceDemo.message";
 	private Gson gson;
 	private ConfigManager cfg;
 
 	/**
-	* No argument constructor for the Zookeeper Demo Service.
+	* No argument constructor for the ConfigManager Demo Service.
 	*/
 	public ServiceDemo() {
-		gson = new Gson();
-		cfg = ConfigManager.getInstance();
-		cfg.setRootNode(this.getClass().getName());
+		try {
+			gson = new Gson();
+			cfg = ConfigManager.getInstance();
+			cfg.setRootNode(getClass().getName());
+			cfg.setConfig(ServiceDemo.PROPERTY_MESSAGE, "Hello World!");
+		}
+		catch (Exception exc) {
+			exc.printStackTrace();
+		}
 	}
 
 	/**
@@ -35,11 +42,19 @@ public class ServiceDemo {
 	@Path("/helloworld")
 	@Produces(MediaType.APPLICATION_JSON)
 	public String getMessage() {
-		return gson.toJson("Hello World");
-		//return gson.toJson(system.property.message);
+		String ret = new String();
+
+		try {
+			ret = System.getProperty(ServiceDemo.PROPERTY_MESSAGE);
+		}
+		catch (Exception exc) {
+			exc.printStackTrace();
+		}
+
+		return gson.toJson(ret);
 	}
 
-		/**
+	/**
 	* 
 	*/
 	@GET
