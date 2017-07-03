@@ -10,11 +10,11 @@
 	<property name="bld" value="${basedir}/bld" />
 	<property name="doc" value="${basedir}/doc" />
 	<property name="jar" value="${basedir}/jar" />
-	<property name="tst" value="${basedir}/tst" />
-	<property name="tests" value="net.scientifichooliganism.configmanager.*" />
-	<property name="sql" value="${basedir}/sql" />
 	<property name="rsrc" value="${basedir}/rsrc" />
 	<property name="rslt" value="${basedir}/junit_results" />
+	<property name="tst" value="${basedir}/tst" />
+	<property name="tests" value="net.scientifichooliganism.configmanager.*" />
+	<property name="war" value="${basedir}/war" />
 	<property name="info.txt" value="${basedir}/info.txt" />
 	<property name="jarbasename" value="configmanager" />
 	<property name="jarextension" value=".jar" />
@@ -98,11 +98,13 @@
 		<delete dir="${jar}" failonerror="false" includeemptydirs="true" />
 		<delete dir="${lib}" failonerror="false" includeemptydirs="true" />
 		<delete dir="${rslt}" failonerror="false" includeemptydirs="true" />
+		<delete dir="${war}" failonerror="false" includeemptydirs="true" />
 		<delete dir="${doc}" failonerror="false" includeemptydirs="true" />
 		<mkdir dir="${bin}" />
 		<mkdir dir="${jar}" />
 		<mkdir dir="${lib}" />
 		<mkdir dir="${rslt}" />
+		<mkdir dir="${war}" />
 		<mkdir dir="${doc}" />
 	</target>
 
