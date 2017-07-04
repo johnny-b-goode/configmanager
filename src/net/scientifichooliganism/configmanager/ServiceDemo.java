@@ -28,7 +28,11 @@ public class ServiceDemo {
 			gson = new Gson();
 			cfg = ConfigManager.getInstance();
 			cfg.setRootNode(getClass().getName());
-			cfg.setConfig(ServiceDemo.PROPERTY_MESSAGE, "Hello World!");
+			cfg.updateConfigs();
+
+			if ((System.getProperty(ServiceDemo.PROPERTY_MESSAGE) == null) || (System.getProperty(ServiceDemo.PROPERTY_MESSAGE).isEmpty())) {
+				cfg.setConfig(ServiceDemo.PROPERTY_MESSAGE, "Hello World!");
+			}
 		}
 		catch (Exception exc) {
 			exc.printStackTrace();
