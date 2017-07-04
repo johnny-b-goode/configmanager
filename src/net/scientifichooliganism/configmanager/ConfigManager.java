@@ -61,6 +61,10 @@ public class ConfigManager {
 		System.setProperty(key, value);
 
 		try {
+			if (zk.exists(getRootNode(), false) == null) {
+				zk.create(getRootNode(), "".getBytes(), ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode.PERSISTENT);
+			}
+
 			if (zk.exists((getRootNode() + "/" + key), false) == null) {
 				zk.create((getRootNode() + "/" + key), System.getProperty(key).getBytes(), ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode.PERSISTENT);
 			}
