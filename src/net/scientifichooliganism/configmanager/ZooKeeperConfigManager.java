@@ -1,11 +1,12 @@
 package net.scientifichooliganism.configmanager;
 
+import net.scientifichooliganism.configmanager.api.ConfigManager;
+
 import org.apache.zookeeper.CreateMode;
 import org.apache.zookeeper.ZooKeeper;
 import org.apache.zookeeper.ZooDefs;
-//import org.apache.zookeeper.data.ACL;
 
-public class ConfigManager {
+public class ZooKeeperConfigManager implements ConfigManager {
 	private static final String PROPERTY_SERVER = "zookeeper.server";
 	private static final String PROPERTY_ROOT_NODE = "zookeeper.rootNode";
 	private static final String PROPERTY_SESSION_TIMEOUT = "zookeeper.sessionTimeout";
@@ -14,21 +15,21 @@ public class ConfigManager {
 	private static ConfigManager instance;
 	private ZooKeeper zk;
 
-	private ConfigManager () {
+	private ZooKeeperConfigManager () {
 		try {
-			if ((System.getProperty(ConfigManager.PROPERTY_SERVER) == null) || (System.getProperty(ConfigManager.PROPERTY_SERVER).isEmpty())) {
-				System.setProperty(ConfigManager.PROPERTY_SERVER, ConfigManager.DEFAULT_SERVER);
+			if ((System.getProperty(ZooKeeperConfigManager.PROPERTY_SERVER) == null) || (System.getProperty(ZooKeeperConfigManager.PROPERTY_SERVER).isEmpty())) {
+				System.setProperty(ZooKeeperConfigManager.PROPERTY_SERVER, ZooKeeperConfigManager.DEFAULT_SERVER);
 			}
 
-			if ((System.getProperty(ConfigManager.PROPERTY_SESSION_TIMEOUT) == null) || (System.getProperty(ConfigManager.PROPERTY_SESSION_TIMEOUT).isEmpty())) {
-				System.setProperty(ConfigManager.PROPERTY_SESSION_TIMEOUT, ConfigManager.DEFAULT_SESSION_TIMEOUT);
+			if ((System.getProperty(ZooKeeperConfigManager.PROPERTY_SESSION_TIMEOUT) == null) || (System.getProperty(ZooKeeperConfigManager.PROPERTY_SESSION_TIMEOUT).isEmpty())) {
+				System.setProperty(ZooKeeperConfigManager.PROPERTY_SESSION_TIMEOUT, ZooKeeperConfigManager.DEFAULT_SESSION_TIMEOUT);
 			}
 
-			if ((System.getProperty(ConfigManager.PROPERTY_ROOT_NODE) == null) || (System.getProperty(ConfigManager.PROPERTY_ROOT_NODE).isEmpty())) {
-				System.setProperty(ConfigManager.PROPERTY_ROOT_NODE, "/" + getClass().getName());
+			if ((System.getProperty(ZooKeeperConfigManager.PROPERTY_ROOT_NODE) == null) || (System.getProperty(ZooKeeperConfigManager.PROPERTY_ROOT_NODE).isEmpty())) {
+				System.setProperty(ZooKeeperConfigManager.PROPERTY_ROOT_NODE, "/" + getClass().getName());
 			}
 
-			zk = new ZooKeeper(System.getProperty(ConfigManager.PROPERTY_SERVER), Integer.parseInt(System.getProperty(PROPERTY_SESSION_TIMEOUT)), null);
+			zk = new ZooKeeper(System.getProperty(ZooKeeperConfigManager.PROPERTY_SERVER), Integer.parseInt(System.getProperty(PROPERTY_SESSION_TIMEOUT)), null);
 		}
 		catch (Exception exc) {
 			exc.printStackTrace();
@@ -38,24 +39,23 @@ public class ConfigManager {
 
 	public static ConfigManager getInstance() {
 		if (instance == null) {
-			instance = new ConfigManager();
+			instance = new ZooKeeperConfigManager();
 		}
 
 		return instance;
 	}
 
-	//realistically this probably isn't even necessary, as configs will be set from other places (ie, not the code using this class)
 	public void setConfig (String key, String value) {
 		if (key == null) {
-			throw new IllegalArgumentException("ConfigManager.setConfig(String, String) String is null");
+			throw new IllegalArgumentException("ZooKeeperConfigManager.setConfig(String, String) String is null");
 		}
 
 		if (key.isEmpty()) {
-			throw new IllegalArgumentException("ConfigManager.setConfig(String, String) String is empty");
+			throw new IllegalArgumentException("ZooKeeperConfigManager.setConfig(String, String) String is empty");
 		}
 
 		if (value == null) {
-			throw new IllegalArgumentException("ConfigManager.setConfig(String, String) String is null");
+			throw new IllegalArgumentException("ZooKeeperConfigManager.setConfig(String, String) String is null");
 		}
 
 		System.setProperty(key, value);
@@ -102,22 +102,22 @@ public class ConfigManager {
 	}
 
 	public String getRootNode () {
-		return System.getProperty(ConfigManager.PROPERTY_ROOT_NODE);
+		return System.getProperty(ZooKeeperConfigManager.PROPERTY_ROOT_NODE);
 	}
 
 	public void setRootNode (String in) {
 		if (in == null) {
-			throw new IllegalArgumentException("ConfigManager.setRootNode(String) was called with a null String");
+			throw new IllegalArgumentException("ZooKeeperConfigManager.setRootNode(String) was called with a null String");
 		}
 
 		if (in.isEmpty()) {
-			throw new IllegalArgumentException("ConfigManager.setRootNode(String) was called with an empty String");
+			throw new IllegalArgumentException("ZooKeeperConfigManager.setRootNode(String) was called with an empty String");
 		}
 
 		if (! in.startsWith("/")) {
 			in = "/" + in;
 		}
 
-		System.setProperty(ConfigManager.PROPERTY_ROOT_NODE, in);
+		System.setProperty(ZooKeeperConfigManager.PROPERTY_ROOT_NODE, in);
 	}
 }

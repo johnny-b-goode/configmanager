@@ -1,5 +1,7 @@
 package net.scientifichooliganism.configmanager;
 
+import net.scientifichooliganism.configmanager.api.ConfigManager;
+
 import java.util.List;
 
 import javax.ws.rs.GET;
@@ -26,7 +28,7 @@ public class ServiceDemo {
 	public ServiceDemo() {
 		try {
 			gson = new Gson();
-			cfg = ConfigManager.getInstance();
+			cfg = ZooKeeperConfigManager.getInstance();
 			cfg.setRootNode(getClass().getName());
 			cfg.updateConfigs();
 

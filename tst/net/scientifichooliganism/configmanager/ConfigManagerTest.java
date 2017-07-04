@@ -1,6 +1,6 @@
 package net.scientifichooliganism.configmanager;
 
-import net.scientifichooliganism.configmanager.ConfigManager;
+import net.scientifichooliganism.configmanager.api.ConfigManager;
 
 import org.junit.*;
 import static org.junit.Assert.*;
