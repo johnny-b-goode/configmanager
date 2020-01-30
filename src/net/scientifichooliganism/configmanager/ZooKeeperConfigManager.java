@@ -1,10 +1,11 @@
 package net.scientifichooliganism.configmanager;
 
-import net.scientifichooliganism.configmanager.api.ConfigManager;
-
+import java.util.Collection;
 import org.apache.zookeeper.CreateMode;
 import org.apache.zookeeper.ZooKeeper;
 import org.apache.zookeeper.ZooDefs;
+
+import net.scientifichooliganism.configmanager.api.ConfigManager;
 
 public class ZooKeeperConfigManager implements ConfigManager {
 	private static final String PROPERTY_SERVER = "zookeeper.server";
@@ -77,6 +78,18 @@ public class ZooKeeperConfigManager implements ConfigManager {
 		}
 	}
 
+	public String getConfig (String key) {
+		if (key == null) {
+			throw new IllegalArgumentException("ZooKeeperConfigManager.getConfig(String) String is null");
+		}
+
+		if (key.isEmpty()) {
+			throw new IllegalArgumentException("ZooKeeperConfigManager.getConfig(String) String is empty");
+		}
+
+		throw new UnsupportedOperationException("ZooKeeperConfigManager.getConfig(String)");
+	}
+
 	public void updateConfigs () {
 		try {
 			for (String key : zk.getChildren(getRootNode(), false)) {
@@ -99,6 +112,10 @@ public class ZooKeeperConfigManager implements ConfigManager {
 		catch (Exception exc) {
 			exc.printStackTrace();
 		}
+	}
+
+	public Collection<String> getConfigs () {
+		throw new UnsupportedOperationException("SystemPropertyConfigManager.getConfigs()");
 	}
 
 	public String getRootNode () {

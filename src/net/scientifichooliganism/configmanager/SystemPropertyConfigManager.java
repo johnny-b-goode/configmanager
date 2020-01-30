@@ -1,18 +1,18 @@
 package net.scientifichooliganism.configmanager;
 
-import net.scientifichooliganism.configmanager.api.ConfigManager;
+import java.util.Collection;
+import java.util.Vector;
 
-import org.apache.zookeeper.CreateMode;
-import org.apache.zookeeper.ZooKeeper;
-import org.apache.zookeeper.ZooDefs;
-//import org.apache.zookeeper.data.ACL;
+import net.scientifichooliganism.configmanager.api.ConfigManager;
 
 public class SystemPropertyConfigManager implements ConfigManager {
 	private static ConfigManager instance;
 	private String rootNode;
+	private Collection <String> keys;
 
 	private SystemPropertyConfigManager () {
 		rootNode = new String();
+		keys = new Vector <String> ();
 	}
 
 	public static ConfigManager getInstance() {
@@ -36,11 +36,41 @@ public class SystemPropertyConfigManager implements ConfigManager {
 			throw new IllegalArgumentException("SystemPropertyConfigManager.setConfig(String, String) String is null");
 		}
 
-		System.setProperty(key, value);
+		if (! keys.contains(key)) {
+			keys.add(key);
+		}
+
+		System.setProperty(rootNode + "." + key, value);
+	}
+
+	public String getConfig (String key) {
+		if (key == null) {
+			throw new IllegalArgumentException("SystemPropertyConfigManager.getConfig(String) String is null");
+		}
+
+		if (key.isEmpty()) {
+			throw new IllegalArgumentException("SystemPropertyConfigManager.getConfig(String) String is empty");
+		}
+
+		String ret = new String();
+
+		try {
+			ret = System.getProperty(rootNode + "." + key);
+			ret = ret.replaceFirst(rootNode + ".", "");
+		}
+		catch (Exception exc) {
+			exc.printStackTrace();
+		}
+
+		return ret;
+	}
+
+	public Collection<String> getConfigs () {
+		return keys;
 	}
 
 	public void updateConfigs () {
-		return;
+		throw new UnsupportedOperationException("SystemPropertyConfigManager.updateConfigs()");
 	}
 
 	public String getRootNode () {

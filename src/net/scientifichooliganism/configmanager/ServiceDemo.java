@@ -30,7 +30,7 @@ public class ServiceDemo {
 			gson = new Gson();
 			cfg = ZooKeeperConfigManager.getInstance();
 			cfg.setRootNode(getClass().getName());
-			cfg.updateConfigs();
+//			cfg.updateConfigs();
 
 			if ((System.getProperty(ServiceDemo.PROPERTY_MESSAGE) == null) || (System.getProperty(ServiceDemo.PROPERTY_MESSAGE).isEmpty())) {
 				cfg.setConfig(ServiceDemo.PROPERTY_MESSAGE, "Hello World!");
@@ -70,7 +70,7 @@ public class ServiceDemo {
 		String ret = new String();
 
 		try {
-			cfg.updateConfigs();
+//			cfg.updateConfigs();
 			ret = "configuration updated successfully";
 		}
 		catch (Exception exc) {
