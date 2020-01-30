@@ -21,7 +21,7 @@
 	<property name="warbasename" value="ROOT" />
 	<property name="warextension" value=".war" />
 	<!--ivy properties-->
-	<property name="ivy.version" value="2.4.0" />
+	<property name="ivy.version" value="2.5.0" />
 	<property name="ivy.lib" value="${lib}/ivy" />
 	<!--sonar properties-->
 	<property name="sonar-project.properties" value="${basedir}/sonar-project.properties" />
@@ -114,7 +114,7 @@
 	</target>
 
 	<target name="ivy.download" depends="ivy.prep" description="">
-		<get src="http://repo1.maven.org/maven2/org/apache/ivy/ivy/${ivy.version}/ivy-${ivy.version}.jar" dest="${ivy.lib}" usetimestamp="true" verbose="true" maxtime="60" retries="1" />
+		<get src="https://repo1.maven.org/maven2/org/apache/ivy/ivy/${ivy.version}/ivy-${ivy.version}.jar" dest="${ivy.lib}" usetimestamp="true" verbose="true" maxtime="60" retries="1" />
 	</target>
 
 	<target name="ivy.define">
