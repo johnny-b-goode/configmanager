@@ -13,7 +13,7 @@
 	<property name="rsrc" value="${basedir}/rsrc" />
 	<property name="rslt" value="${basedir}/junit_results" />
 	<property name="tst" value="${basedir}/tst" />
-	<property name="tests" value="net.scientifichooliganism.configmanager.*" />
+	<property name="tests" value="**/*Test*.class" />
 	<property name="war" value="${basedir}/war" />
 	<property name="info.txt" value="${basedir}/info.txt" />
 	<property name="jarbasename" value="configmanager" />
@@ -202,15 +202,19 @@
 	</target>
 
 	<target name="run_tests" description="">
-		<junit printsummary="withOutAndErr" haltonerror="true" haltonfailure="true" showoutput="true" logfailedtests="true">
+		<junitlauncher printSummary="true" haltOnFailure="true">
 			<classpath>
 				<path refid="classpath" />
 				<pathelement path="${bin}" />
 				<pathelement path="${tst}" />
 			</classpath>
-			<formatter type="xml" />
-			<test name="${tests}" todir="${rslt}" />
-		</junit>
+			<listener type="legacy-xml" sendSysOut="true" sendSysErr="true" outputDir="${rslt}" />
+			<testclasses>
+				<fileset dir="${tst}">
+					<include name="${tests}" />
+				</fileset>
+			</testclasses>
+		</junitlauncher>
 	</target>
 
 	<target name="releasejar" if="is_ver_set" depends="clean_jar">
