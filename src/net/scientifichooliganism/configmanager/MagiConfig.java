@@ -7,7 +7,7 @@ import java.util.Vector;
 import net.scientifichooliganism.configmanager.api.ConfigManager;
 
 public class MagiConfig implements ConfigManager {
-	private static ConfigManager instance;
+	private static MagiConfig instance;
 	private String rootNode;
 	private List <ConfigManager> configManagers;
 
@@ -16,7 +16,7 @@ public class MagiConfig implements ConfigManager {
 		configManagers = new Vector <ConfigManager> ();
 	}
 
-	public static ConfigManager getInstance() {
+	public static MagiConfig getInstance() {
 		if (instance == null) {
 			instance = new MagiConfig();
 		}
@@ -24,6 +24,7 @@ public class MagiConfig implements ConfigManager {
 		return instance;
 	}
 
+	/** This method will will set key == value in every ConfigManager currently registered.*/
 	public void setConfig (String key, String value) {
 		if (key == null) {
 			throw new IllegalArgumentException("MagiConfig.setConfig(String, String) String is null");
@@ -37,7 +38,14 @@ public class MagiConfig implements ConfigManager {
 			throw new IllegalArgumentException("MagiConfig.setConfig(String, String) String is null");
 		}
 
-		throw new UnsupportedOperationException("MagiConfig.setConfig(String, String)");
+		if (configManagers.size() < 1) {
+			throw new RuntimeException("MagiConfig requires at least one ConfigManager to be registered before attempting to set or retrieve configuration items");
+		}
+
+		for (int i = 0; i < configManagers.size(); i++) {
+			ConfigManager current = configManagers.get(i);
+			current.setConfig(key, value);
+		}
 	}
 
 	/** This method will return the first value associated with a given key found, starting with the highest priority ConfigManager*/
@@ -53,8 +61,9 @@ public class MagiConfig implements ConfigManager {
 		String ret = null;
 
 		try {
-			for (ConfigManager cm : configManagers) {
-				ret = cm.getConfig(key);
+			for (int i = 0; i < configManagers.size(); i++) {
+				ConfigManager current = configManagers.get(i);
+				ret = current.getConfig(key);
 
 				if (ret != null) {
 					break;
@@ -68,6 +77,7 @@ public class MagiConfig implements ConfigManager {
 		return ret;
 	}
 
+	//I am not sure this method should be supported here, as the intent of this class is to abstract the management of configuration items.
 	public Collection<String> getConfigs () {
 		throw new UnsupportedOperationException("SystemPropertyConfigManager.getConfigs()");
 	}
@@ -89,7 +99,7 @@ public class MagiConfig implements ConfigManager {
 			throw new IllegalArgumentException("MagiConfig.setRootNode(String) was called with an empty String");
 		}
 
-		rootNode = in;
+		throw new UnsupportedOperationException("MagiConfig.setRootNode(String)");
 	}
 
 	public void registerConfigManager (int priority, ConfigManager cm) {
@@ -140,8 +150,6 @@ public class MagiConfig implements ConfigManager {
 
 	/**This method will synchronize all configuration items from the lowest priority ConfigManager to the next highest priority ConfigManager until all configuration items have been synchronized in the highest priority ConfigurationManager. This is opposite normal behavior. This method will create any configuration items missing from higher priority ConfigurationManagers.*/
 	public void syncConfigsUp () {
-//		throw new UnsupportedOperationException("MagiConfig.syncConfigsUp()");
-
 		//there is no point synchronizing the zeroth ConfigManager, so we only iterate until the second highest priority in the outermost loop
 		for (int i = (configManagers.size() - 1); i >= 1; i--) {
 			ConfigManager current = configManagers.get(i);
@@ -173,5 +181,9 @@ public class MagiConfig implements ConfigManager {
 				}
 			}
 		}  
+	}
+
+	public String hammer () {
+		throw new UnsupportedOperationException("can't touch this");
 	}
 }

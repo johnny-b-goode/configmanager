@@ -51,13 +51,13 @@ public class EnvironmentVariableConfigManager implements ConfigManager {
 		String ret = new String();
 
 		try {
-			if (! rootNode.isEmpty()) {
-				//yeah, I know
-				key = rootNode + "." + key;
+			if (rootNode.isEmpty()) {
+				ret = System.getenv(key);
 			}
-
-			ret = System.getenv(key);
-			ret = ret.replaceFirst(rootNode + ".", "");
+			else {
+				ret = System.getenv(rootNode + "." + key);
+				ret = ret.replaceFirst(rootNode + "\\.", "");
+			}
 		}
 		catch (Exception exc) {
 			exc.printStackTrace();
@@ -67,6 +67,14 @@ public class EnvironmentVariableConfigManager implements ConfigManager {
 	}
 
 	public Collection<String> getConfigs () {
+		if ((keys.size() < 1) && (! rootNode.isEmpty())) {
+			for (String key : System.getenv().keySet()) {
+				if (key.startsWith(rootNode + ".")) {
+					keys.add(key.replaceFirst(rootNode + "\\.", ""));
+				}
+			}
+		}
+
 		return keys;
 	}
 

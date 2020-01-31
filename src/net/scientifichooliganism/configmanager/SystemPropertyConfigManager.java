@@ -40,7 +40,12 @@ public class SystemPropertyConfigManager implements ConfigManager {
 			keys.add(key);
 		}
 
-		System.setProperty(rootNode + "." + key, value);
+		if (rootNode.isEmpty()) {
+			System.setProperty(key, value);
+		}
+		else {
+			System.setProperty(rootNode + "." + key, value);
+		}
 	}
 
 	public String getConfig (String key) {
@@ -55,8 +60,13 @@ public class SystemPropertyConfigManager implements ConfigManager {
 		String ret = new String();
 
 		try {
-			ret = System.getProperty(rootNode + "." + key);
-			ret = ret.replaceFirst(rootNode + ".", "");
+			if (rootNode.isEmpty()) {
+				ret = System.getProperty(key);
+			}
+			else {
+				ret = System.getProperty(rootNode + "." + key);
+				ret = ret.replaceFirst(rootNode + "\\.", "");
+			}
 		}
 		catch (Exception exc) {
 			exc.printStackTrace();
@@ -84,6 +94,10 @@ public class SystemPropertyConfigManager implements ConfigManager {
 
 		if (in.isEmpty()) {
 			throw new IllegalArgumentException("SystemPropertyConfigManager.setRootNode(String) was called with an empty String");
+		}
+
+		if (keys.size() > 0) {
+			//update the existing property names to include the root node in order to prevent any properties being abandoned
 		}
 
 		rootNode = in;
