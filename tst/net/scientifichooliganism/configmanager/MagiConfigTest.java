@@ -67,10 +67,27 @@ public class MagiConfigTest {
 		assertTrue(mc.getConfig(key).equals(value));
 	}
 
-//TODO: Test changing the priority of ConfigManagers
 	@Disabled
 	@Test
 	public void test08 () {
+		String key01 = "systestkey01";
+		String value01 = "systestvalue01";
+		String key02 = "systestkey01";
+		String value02 = "systestvalue01";
+		String key03 = "envtestkey01";
+		MagiConfig mc = MagiConfig.getInstance();
+		EnvironmentVariableConfigManager.getInstance().setRootNode("magiconfig");
+		mc.registerConfigManager(SystemPropertyConfigManager.getInstance());
+		mc.registerConfigManager(EnvironmentVariableConfigManager.getInstance());
+		assertTrue(mc.getConfigs().contains(key01));
+		assertTrue(mc.getConfigs().contains(key02));
+		assertTrue(mc.getConfigs().contains(key03));
+	}
+
+//TODO: Test changing the priority of ConfigManagers
+	@Disabled
+	@Test
+	public void test09 () {
 		//
 	}
 

@@ -77,9 +77,24 @@ public class MagiConfig implements ConfigManager {
 		return ret;
 	}
 
-	//I am not sure this method should be supported here, as the intent of this class is to abstract the management of configuration items.
+	/** This method will return an aggregate list of configuration items managed by the registered ConfigManagers.*/
 	public Collection<String> getConfigs () {
-		throw new UnsupportedOperationException("SystemPropertyConfigManager.getConfigs()");
+		Collection <String> ret = new Vector <String>();
+
+		try {
+			for (ConfigManager cm : configManagers) {
+				for (String key : cm.getConfigs()) {
+					if (! ret.contains(key)) {
+						ret.add(key);
+					}
+				}
+			}
+		}
+		catch (Exception exc) {
+			exc.printStackTrace();
+		}
+
+		return ret;
 	}
 
 	public void updateConfigs () {
@@ -180,7 +195,7 @@ public class MagiConfig implements ConfigManager {
 					}
 				}
 			}
-		}  
+		}
 	}
 
 	public String hammer () {
